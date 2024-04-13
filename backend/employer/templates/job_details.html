@@ -1,0 +1,26 @@
+<!-- employer/employer_main.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details<br>Title: {{ job.title }}</title>
+</head>
+<body>
+    <h1>Job Details<br>Title: {{ job.title }}</h1>
+    <p><strong>Description:</strong> {{ job.description }}</p>
+    <p><strong>Job Type:</strong> {{ job.job_type }}</p>
+    <p><strong>Salary:</strong> {{ job.salary }}</p>
+    <p><strong>City:</strong> {{ job.city }}</p>
+    <p><strong>Country:</strong> {{ job.country }}</p>
+    <p><strong>Company:</strong> {{ job.company }}</p>
+    <p><strong>Created At:</strong> {{ job.created_at }}</p>
+    <!-- Add more details as needed -->
+    <a href="{% url 'employer:employer_job_applicants' job.id %}">
+        <button>View Applicants</button>
+    </a>
+</body>
+<br>
+<br>
+{% endblock %}

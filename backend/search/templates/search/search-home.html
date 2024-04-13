@@ -1,0 +1,30 @@
+<!-- search/search-home.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h2>New Search</h2>
+  <form method="get" action="{% url 'posts:post_list' %}">
+    {% csrf_token %}
+    <div>
+      <label>Search For...</label>
+      {{ form.search_term }}
+    </div>
+    <div>
+      <label>City</label>
+      {{ form.city}}
+    </div>
+    <div>
+      <label>Country</label>
+      {{ form.country }}
+    </div>
+    <div>
+      <label>Minimum Salary Bound</label>
+      {{ form.salary_min }}
+    </div>
+    <div>
+      <label>Maximum Salary Bound</label>
+      {{ form.salary_max }}
+    </div>
+    <button type="submit" >Search</button><br><br>
+  </form>
+{% endblock %}

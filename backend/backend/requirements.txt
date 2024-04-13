@@ -1,0 +1,5 @@
+django==4.2.11
+python-decouple==3.8
+djoser==2.2.2
+mssql-django==1.4.2
+pillow==10.3.0

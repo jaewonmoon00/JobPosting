@@ -1,0 +1,28 @@
+<!-- employer/employer_main.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Applicants for<br>{{ job.title }} </title>
+</head>
+<body>
+    <h1>Applicants for<br>{{ job.title }}</h1>
+    {% if applicants %}
+        <ul>
+            {% for applicant in applicants %}
+                <li>
+                    {{ applicant.profile.applicant_profile_name }} 
+                    <a href="{% url 'employer:employer_job_applicant_profile' job.id applicant.id %}">(View Profile)</a>
+                </li>
+                <!-- Add more applicant details as needed -->
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No applicants yet.</p>
+    {% endif %}
+</body>
+<br>
+<br>
+{% endblock %}

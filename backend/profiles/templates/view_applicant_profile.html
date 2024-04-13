@@ -1,0 +1,36 @@
+{% extends 'base_generic.html' %}
+{% block content %}
+    <h1>Applicant Profile</h1>
+    <p><strong>Profile name:</strong> {{ profile.applicant_profile_name }}</p>
+    <p><strong>Past Work Experience:</strong> <br> <span id="decrypted_past_work_experience"></span></p>
+    <p><strong>Abilities and Skills:</strong> <br> <span id="decrypted_abilities_skills"></span></p>
+    <p><strong>Education:</strong> <br> <span id="decrypted_education"></span></p>
+    <p><strong>Achievements and Honors:</strong> <br> <span id="decrypted_achievement_honors"></span></p>
+    <p><strong>Tell the Employer:</strong> <br> <span id="decrypted_tell_the_employer"></span></p>
+    <!-- Add more fields as needed -->
+
+    <!-- Include CryptoJS library for AES decryption -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        // Function to decrypt the encrypted values
+        function decryptValues(encryptionKey) {
+            document.getElementById('decrypted_past_work_experience').textContent = decryptValue('{{ profile.past_work_experience }}', encryptionKey);
+            document.getElementById('decrypted_abilities_skills').textContent = decryptValue('{{ profile.abilities_skills }}', encryptionKey);
+            document.getElementById('decrypted_education').textContent = decryptValue('{{ profile.education }}', encryptionKey);
+            document.getElementById('decrypted_achievement_honors').textContent = decryptValue('{{ profile.achievement_honors }}', encryptionKey);
+            document.getElementById('decrypted_tell_the_employer').textContent = decryptValue('{{ profile.tell_the_employer }}', encryptionKey);
+            // Add more decryption for other fields as needed
+        }
+
+        // Function to decrypt a single value
+        function decryptValue(encryptedValue, encryptionKey) {
+            return CryptoJS.AES.decrypt(encryptedValue, encryptionKey).toString(CryptoJS.enc.Utf8);
+        }
+
+        // Call the decryption function when the page is loaded
+        window.onload = function() {
+            var encryptionKey = localStorage.getItem('applicantProfileKey');
+            decryptValues(encryptionKey);
+        };
+    </script>
+{% endblock %}

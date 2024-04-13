@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Privacy-Enhanced Job Board</title>
+    <!-- Add your CSS files here -->
+    {% comment %} <link rel="stylesheet" href="{% static 'css/style.css' %}"> {% endcomment %}
+    <style>
+        .auth-links {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%; /* circular picture */
+            object-fit: cover; /* This ensures the image covers the space without distorting */
+            margin-right: 10px; /* Adds some space between the picture and the username */
+            vertical-align: middle; /* Aligns the picture with the text */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="{% url 'search:search-home' %}">
+            <h1>[Privacy-Enhanced Job Board]</h1>
+        </a>
+        {% if user.is_authenticated %}
+            <div class="auth-links">
+                {% comment %} if we can know the type of currently logged in user and if it's applicant, direct user to below url {% endcomment %}
+                {% comment %} profiles:profiles_main {% endcomment %}
+                {% if user.baseuser.employeruser %}
+                <a href="{% url 'employer:employer_main' %}">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt="Profile Picture" class="profile-pic">
+                </a>
+                {% else %}
+                <a href="{% url 'profiles:profiles_main' %}">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg" alt="Profile Picture" class="profile-pic">
+                </a>
+                {% endif %}
+                <span>{{user.username}}</span> &nbsp;
+                <a href="{% url 'user_management:log-out' %}">Log Out</a>
+            </div>
+        {% else %}
+            <div class="auth-links">
+                <a href="{% url 'user_management:sign-up' %}">
+                    Sign Up
+                </a> &nbsp;
+                <a href="{% url 'user_management:log-in' %}">
+                    Login
+                </a>
+            </div>
+        {% endif %}
+        <!-- Add your navigation links here -->
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- This is where the content from child templates will go -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <!-- Add your footer content here -->
+        <span>© 2024 Job Posting Website</span> &nbsp;
+        <a href="{% url 'privacy:privacy_policy' %}">Privacy Policy</a>
+    </footer>
+
+    <!-- Add your JavaScript files here -->
+    {% comment %} <script src="{% static 'js/script.js' %}"></script> {% endcomment %}
+</body>
+</html>

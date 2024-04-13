@@ -1,0 +1,10 @@
+<!-- landing_page.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <!-- Include the search form -->
+  {% include "search/search-home.html" %}
+
+  <!-- Include the post list -->
+  {% include "jobposting/post_list.html" %}
+{% endblock %}

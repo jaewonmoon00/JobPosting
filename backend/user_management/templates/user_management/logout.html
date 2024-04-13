@@ -1,0 +1,9 @@
+<!-- user_management/logout.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <div>
+        <h3>You have been logged out.</h3>
+        <a href="{% url 'search:search-home' %}">Return to Home</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,89 @@
+<!-- employer/employer_main.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicant Profile</title>
+</head>
+<body>
+        <!-- Button to import private key -->
+        <button id="importPrivateKeyBtn">Import Private Key</button>
+        
+    <h1>Applicant Profile</h1>
+    <h2>{{ applicant_profile.applicant_profile_name }}</h2>
+    <p><strong>Past Work Experience:</strong> <br> <span id="decrypted_past_work_experience"></span></p>
+    <p><strong>Abilities and Skills:</strong> <br> <span id="decrypted_abilities_skills"></span></p>
+    <p><strong>Education:</strong> <br> <span id="decrypted_education"></span></p>
+    <p><strong>Achievements and Honors:</strong> <br> <span id="decrypted_achievement_honors"></span></p>
+    <p><strong>Tell the Employer:</strong> <br> <span id="decrypted_tell_the_employer"></span></p>
+    <!-- Add more details as needed -->
+    <form action="{% url 'employer:employer_job_applicant_interest' job_id applicant_id%}">
+        <button type="submit">Interested</button>
+    </form>
+
+
+</body>
+<br>
+<br>
+
+<!-- Include CryptoJS library for AES decryption -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+<script>
+    // Function to decrypt the encrypted values
+    function decryptValues(encryptionKey) {
+        document.getElementById('decrypted_past_work_experience').textContent = decryptValue('{{ applicant_profile.past_work_experience }}', encryptionKey);
+        document.getElementById('decrypted_abilities_skills').textContent = decryptValue('{{ applicant_profile.abilities_skills }}', encryptionKey);
+        document.getElementById('decrypted_education').textContent = decryptValue('{{ applicant_profile.education }}', encryptionKey);
+        document.getElementById('decrypted_achievement_honors').textContent = decryptValue('{{ applicant_profile.achievement_honors }}', encryptionKey);
+        document.getElementById('decrypted_tell_the_employer').textContent = decryptValue('{{ applicant_profile.tell_the_employer }}', encryptionKey);
+    }
+
+    // Function to decrypt the encrypted values
+    function showUnencryptedValues() {
+        document.getElementById('decrypted_past_work_experience').textContent = '{{ applicant_profile.past_work_experience }}';
+        document.getElementById('decrypted_abilities_skills').textContent = '{{ applicant_profile.abilities_skills }}';
+        document.getElementById('decrypted_education').textContent = '{{ applicant_profile.education }}';
+        document.getElementById('decrypted_achievement_honors').textContent = '{{ applicant_profile.achievement_honors }}';
+        document.getElementById('decrypted_tell_the_employer').textContent = '{{ applicant_profile.tell_the_employer }}';
+    }
+
+    // Function to decrypt a single value
+    function decryptValue(encryptedValue, encryptionKey) {
+        var decrypt = new JSEncrypt();
+        decrypt.setPrivateKey(encryptionKey);
+        return decrypt.decrypt(encryptedValue);
+    }
+
+    
+    // Function to handle importing private key
+    function importPrivateKey() {
+        var privateKey = prompt("Enter your private key:");
+        if (privateKey !== null && privateKey.trim() !== "") {
+            sessionStorage.setItem('privateKey', privateKey);
+            // Call the decryption function with the imported key
+            decryptValues(privateKey);
+        } else {
+            alert("Private key not provided or empty.");
+        }
+    }
+
+
+    // Call the decryption function when the page is loaded
+    window.onload = function() {
+        var encryptionKey = sessionStorage.getItem('privateKey');
+        if (encryptionKey) {
+            decryptValues(encryptionKey);
+        } else {
+            showUnencryptedValues();
+        }
+    };
+
+    document.getElementById('importPrivateKeyBtn').addEventListener('click', importPrivateKey);
+
+</script>
+{% endblock %}
+
+

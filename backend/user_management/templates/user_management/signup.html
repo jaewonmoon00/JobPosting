@@ -1,0 +1,33 @@
+<!-- user_management/signup.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+    <h2>Sign Up</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div>
+                {% for key, value in form.errors.items %}
+                    <p>{{key}} {{value}}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div>
+            <label>Email Address</label>
+            {{ form.username}}
+        </div>
+        <div>
+            <label>Password</label>
+            {{ form.password1}}
+        </div>
+        <div>
+            <label>Confirm Password</label>
+            {{ form.password2 }}
+        </div>
+        <div>
+            <label>Select Account Type</label>
+            {{ form.account_type }}
+        </div>
+        <button type="submit" >Register</button><br><br>
+    </form>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!-- jobposting/post_list.html -->
+{% extends 'base_generic.html' %}
+{% block content %}
+  <style>
+    .post {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    .post-title {
+      margin: 0 0 10px;
+      color: #333;
+    }
+
+    .post-title a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    .post-title a:hover {
+      color: #0056b3;
+    }
+
+    .post-content {
+      margin: 0;
+    }
+    
+    .create-post-form {
+      margin-bottom: 20px;
+    }
+  </style>
+  {% comment %} {% include "search/search-home.html" %} {% endcomment %}
+  <h2>Posts</h2>
+  <form action="{% url 'posts:post_create' %}" class="create-post-form">
+    <button type="submit">Create Post</button>
+  </form>
+  {% for post in posts %}
+    <div class="post">
+      <h3 class="post-title"><a href="{% url 'posts:post_detail' post.id %}">{{ post.title }}</a></h3>
+      <p class="post-content">{{ post.content|truncatewords:30 }}</p>
+    </div>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,38 @@
+<!-- employer/jobs.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Jobs</title>
+</head>
+<body>
+    <h1>Jobs Created by {{ employer.company_name }}</h1>
+    {% if jobs %}
+        <ul>
+            {% for job in jobs %}
+                <li>
+                    <strong>Title:</strong> {{ job.title }}<br>
+                    Description: {{ job.description }}<br>
+                    Salary: {{ job.salary }}<br>
+                    Location: {{ job.location }}<br>
+                    <!-- Display other job details as needed -->
+                    <form action="{% url 'employer:employer_job_details' job.id %}">
+                        <input type="submit" value="View Details">
+                    </form>
+                    <form action="{% url 'employer:employer_job_applicants' job.id %}">
+                        <input type="submit" value="View Applicants">
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No jobs created yet.</p>
+    {% endif %}
+    <!-- Button to create a new job -->
+    <a href="{% url 'posts:post_create' %}" class="btn btn-primary">Create New Job</a>
+</body>
+<br>
+<br>
+{% endblock %}

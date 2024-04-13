@@ -1,0 +1,38 @@
+<!-- employer/employer_main.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<body>
+    <h1>Employer Verification</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="company_name">Company Name:</label>
+        <input type="text" id="company_name" name="company_name">
+        <br><br>
+        <label for="business_address">Business Address:</label>
+        <input type="text" id="business_address" name="business_address">
+        <br><br>
+        <label for="company_description">Company Description:</label><br>
+        <textarea id="company_description" name="company_description" rows="4" cols="50"></textarea>
+        <br><br>
+        <label for="business_contact_info">Business Contact Information:</label>
+        <input type="text" id="business_contact_info" name="business_contact_info">
+        <br><br>
+        <label for="business_logo">Business Logo:</label>
+        <input type="file" id="business_logo" name="business_logo">
+        <br><br>
+        <label for="file1">File 1:</label>
+        <input type="file" id="file1" name="file1">
+        <br><br>
+        <label for="file2">File 2:</label>
+        <input type="file" id="file2" name="file2">
+        <br><br>
+        <label for="public_key">Provide your own RSA public key:</label><br>
+        <textarea id="public_key" name="public_key" rows="4" cols="50"></textarea>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+<br>
+<br>
+{% endblock %}

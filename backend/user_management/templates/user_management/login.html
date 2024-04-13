@@ -1,0 +1,37 @@
+<!-- user_management/login.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+        <h2>Log In</h2>
+        <form method="post" id="loginForm" onsubmit="login(event)">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div>
+                    {% for key, value in form.errors.items %}
+                        <p>{{key}} {{value}}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div>
+                <label>Email Address</label>
+                {{ form.username}}
+            </div>
+            <div>
+                <label>Password</label>
+                {{ form.password }}
+            </div>
+            <button type="submit">Login</button><br><br>
+            <p>Don't have an account? <a href="{% url 'user_management:sign-up' %}">Sign Up</a></p>
+        </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        function login(event) {
+            // Calculate the hash of the password
+            var hash = CryptoJS.SHA256(document.getElementById('id_password').value).toString();
+            
+            // Store the hash of the password as the key to be used to encrypt/decrypt the user's applicant profiles in the current session
+            localStorage.setItem('applicantProfileKey', hash);
+        }
+    </script>
+{% endblock %}

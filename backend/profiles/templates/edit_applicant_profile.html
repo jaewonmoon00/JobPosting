@@ -1,0 +1,62 @@
+<!-- edit_applicant_profile.html -->
+{% extends 'base_generic.html' %}
+{% block content %}
+    <h1>Edit Applicant Profile</h1>
+    <form id="profileForm" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="button" onclick="encryptAndSubmit()">Save</button>
+    </form>
+
+        <!-- Include CryptoJS library for AES decryption -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+        <script>
+            // Function to decrypt the encrypted values
+            function decryptValues(encryptionKey) {
+                var past_work_experience = document.getElementById('id_past_work_experience');
+                past_work_experience.value = decryptValue(past_work_experience.value, encryptionKey);
+                var abilities_skills = document.getElementById('id_abilities_skills');
+                abilities_skills.value = decryptValue(abilities_skills.value, encryptionKey);
+                var education = document.getElementById('id_education');
+                education.value = decryptValue(education.value, encryptionKey);
+                var achievement_honors = document.getElementById('id_achievement_honors');
+                achievement_honors.value = decryptValue(achievement_honors.value, encryptionKey);
+                var tell_the_employer = document.getElementById('id_tell_the_employer');
+                tell_the_employer.value = decryptValue(tell_the_employer.value, encryptionKey);
+            }
+    
+            // Function to decrypt a single value
+            function decryptValue(encryptedValue, encryptionKey) {
+                return CryptoJS.AES.decrypt(encryptedValue, encryptionKey).toString(CryptoJS.enc.Utf8);
+            }
+    
+            // Call the decryption function when the page is loaded
+            window.onload = function() {
+                var encryptionKey = localStorage.getItem('applicantProfileKey');
+                decryptValues(encryptionKey);
+            };
+        </script>
+
+    <!-- Include CryptoJS library for AES encryption -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        function encryptAndSubmit() {
+            //var encryptionKey = CryptoJS.lib.WordArray.random(16);
+            var encryptionKey = localStorage.getItem('applicantProfileKey');
+
+            // Encrypt the data in the client
+            var past_work_experience = document.getElementById('id_past_work_experience');
+            past_work_experience.value = CryptoJS.AES.encrypt(past_work_experience.value, encryptionKey).toString();
+            var abilities_skills = document.getElementById('id_abilities_skills');
+            abilities_skills.value = CryptoJS.AES.encrypt(abilities_skills.value, encryptionKey).toString();
+            var education = document.getElementById('id_education');
+            education.value = CryptoJS.AES.encrypt(education.value, encryptionKey).toString();
+            var achievement_honors = document.getElementById('id_achievement_honors');
+            achievement_honors.value = CryptoJS.AES.encrypt(achievement_honors.value, encryptionKey).toString();
+            var tell_the_employer = document.getElementById('id_tell_the_employer');
+            tell_the_employer.value = CryptoJS.AES.encrypt(tell_the_employer.value, encryptionKey).toString();
+
+            document.getElementById("profileForm").submit();
+        }
+    </script>
+{% endblock %}

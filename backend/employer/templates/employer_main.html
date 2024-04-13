@@ -1,0 +1,44 @@
+<!-- employer/employer_main.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Main Page</title>
+</head>
+<body>
+    <h1>Welcome to the Employer Main Page</h1>
+    
+    {% if not employer_verified and not verification_in_progress %}
+        <p>Your employer status is not verified.</p>
+        <form action="{% url 'employer:employer_verify' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Verify Employer & Add Company</button>
+        </form>
+    {% elif not employer_verified and verification_in_progress %}
+        <p>Your employer status verification is in progress.</p>
+        <form action="{% url 'employer:employer_verify_view' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">View Information Submitted for Verification</button>
+        </form>
+        <form action="{% url 'employer:employer_verify_cancel' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Cancel Verification</button>
+        </form>
+    {% else %}
+        <p>Your employer status is verified.</p>
+        <form action="{% url 'employer:employer_company' %}" method="get">
+            <button type="submit">View Company Information</button>
+        </form>
+        <form action="{% url 'employer:employer_jobs' %}" method="get">
+            <button type="submit">View Jobs Posted</button>
+        </form>
+        <form action="{% url 'posts:post_create' %}" method="get">
+            <button type="submit">Create New Job Post</button>
+        </form>
+    {% endif %}
+</body>
+<br>
+<br>
+{% endblock %}

@@ -1,0 +1,24 @@
+<!-- employer/employer_main.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Verification Details</title>
+</head>
+<body>
+    <h1>Employer Verification Details</h1>
+    <p><strong>Company Name:</strong> {{ employer_verification.company_name }}</p>
+    <p><strong>Business Address:</strong> {{ employer_verification.business_address }}</p>
+    <p><strong>Company Description:</strong> {{ employer_verification.company_description }}</p>
+    <p><strong>Business Contact Info:</strong> {{ employer_verification.business_contact_info }}</p>
+    <p><strong>Business Logo:</strong></p>
+    <img src="{{ employer_verification.business_logo.url }}" alt="Business Logo" width="100">
+    <p><strong>File 1:</strong> <a href="{{ employer_verification.file1.url }}" target="_blank">{{ employer_verification.file1.name }}</a></p>
+    <p><strong>File 2:</strong> <a href="{{ employer_verification.file2.url }}" target="_blank">{{ employer_verification.file2.name }}</a></p>
+    <p><strong>Created At:</strong> {{ employer_verification.created_at }}</p>
+</body>
+<br>
+<br>
+{% endblock %}

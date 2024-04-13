@@ -1,0 +1,81 @@
+<!-- post_apply.html -->
+{% extends 'base_generic.html' %}
+{% block content %}
+<h1>Apply for {{ post.title }}</h1>
+{% if profiles %}
+<form id="application_form" method="post" action="{% url 'posts:post_apply' post.pk %}" onsubmit="updateHiddenFields()">  {% csrf_token %}
+  <h2>Select a profile:</h2>
+  <select id="profile_id" name="profile_id">
+    {% for profile in profiles %}
+    {% if not profile.is_copy %}
+    <option value="{{ profile.pk }}" 
+    data-past-work="{{ profile.past_work_experience }}"
+    data-abilities="{{ profile.abilities_skills }}"
+    data-education="{{ profile.education }}"
+    data-achievement="{{ profile.achievement_honors }}"
+    data-tell-employer="{{ profile.tell_the_employer }}">{{ profile.applicant_profile_name }}</option>
+    {% endif %}
+    {% endfor %}
+  </select>
+  <input type="hidden" name="public_key" id="public_key" value="{{ post.employer.public_key }}">
+  <input type="hidden" name="past_work_experience" id="past_work_experience" value="c">
+  <input type="hidden" name="abilities_skills" id="abilities_skills" value="c">
+  <input type="hidden" name="education" id="education" value="c">
+  <input type="hidden" name="achievement_honors" id="achievement_honors" value="c">
+  <input type="hidden" name="tell_the_employer" id="tell_the_employer" value="c">
+
+  <button type="submit">Submit Application</button>
+</form>
+<p><a href="{% url 'profiles:create_profile' %}?next={% url 'posts:post_apply' post.pk %}">Create a new profile</a></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/2.3.1/jsencrypt.min.js"></script>
+<script>
+
+function updateHiddenFields() {
+    var encrypt = new JSEncrypt();
+
+    encrypt.setPublicKey(document.getElementById('public_key').value)
+
+    var profileId = document.getElementById("profile_id").value;
+    var selectedOption = document.getElementById("profile_id").options[document.getElementById("profile_id").selectedIndex];
+    var key = localStorage.getItem('applicantProfileKey');
+
+    var decryptedWorkExperience = decryptValue(selectedOption.getAttribute('data-past-work'), key);
+    var decryptedAbilitiesSkills = decryptValue(selectedOption.getAttribute('data-abilities'), key);
+    var decryptedEducation = decryptValue(selectedOption.getAttribute('data-education'), key);
+    var decryptedAchievementHonors = decryptValue(selectedOption.getAttribute('data-achievement'), key);
+    var decryptedTellTheEmployer = decryptValue(selectedOption.getAttribute('data-tell-employer'), key);
+
+    var encrypted1 = encrypt.encrypt(decryptedWorkExperience);
+    var encrypted2 = encrypt.encrypt(decryptedAbilitiesSkills);
+    var encrypted3 = encrypt.encrypt(decryptedEducation);
+    var encrypted4 = encrypt.encrypt(decryptedAchievementHonors);
+    var encrypted5 = encrypt.encrypt(decryptedTellTheEmployer);
+
+    document.getElementById("past_work_experience").value = encrypted1;
+    document.getElementById("abilities_skills").value = encrypted2;
+    document.getElementById("education").value = encrypted3;
+    document.getElementById("achievement_honors").value = encrypted4;
+    document.getElementById("tell_the_employer").value = encrypted5;
+
+}
+
+
+function decryptValue(encryptedValue, encryptionKey) {
+    return CryptoJS.AES.decrypt(encryptedValue, encryptionKey).toString(CryptoJS.enc.Utf8);
+}
+
+function encrypt() {
+  var crypt = new JSE
+}
+
+
+</script>
+
+{% else %}
+<p>You don't have any profiles. <a href="{% url 'profiles:create_profile' %}?next={% url 'posts:post_apply' post.pk %}">Create one</a>.</p>
+{% endif %}
+{% endblock %}
+
+

@@ -1,0 +1,20 @@
+<!-- employer/employer_company.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Information</title>
+</head>
+<body>
+    <h1>Company Information</h1>
+    <p><strong>Company Name:</strong> {{ employer_verification.company_name }}</p>
+    <p><strong>Business Address:</strong> {{ employer_verification.business_address }}</p>
+    <p><strong>Company Description:</strong> {{ employer_verification.company_description }}</p>
+    <p><strong>Business Contact Info:</strong> {{ employer_verification.business_contact_info }}</p>
+    <!-- You can add more fields as needed -->
+</body>
+<br>
+<br>
+{% endblock %}

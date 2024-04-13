@@ -1,0 +1,11 @@
+<!-- jobposting/post_delete.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <h2>Delete Post</h2>
+  <p>Are you sure you want to delete the post "{{ post.title }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete</button>
+  </form>
+{% endblock %}

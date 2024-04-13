@@ -1,0 +1,46 @@
+<!-- profiles_main.html -->
+{% extends 'base_generic.html' %}
+{% block content %}
+    <h1>Applicant Profiles</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for profile in profiles %}
+                {% if not profile.is_copy %}
+                <tr>
+                    <td><strong>{{ profile.applicant_profile_name }}</strong></td>
+                    <td>
+                        <a href="{% url 'profiles:view_profile' profile.pk %}">
+                            <button>View details</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'profiles:edit_profile' profile.pk %}">
+                            <button>Edit</button>
+                        </a>
+                    </td>
+                    <td>
+                        <form action="{% url 'profiles:delete_profile' profile.pk %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endif %}
+            {% empty %}
+                <tr>
+                    <td colspan="2">No profiles found.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Button to create a new profile -->
+    <a href="{% url 'profiles:create_profile' %}">
+        <button>Create New Applicant Profile</button>
+    </a>
+{% endblock %}

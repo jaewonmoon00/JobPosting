@@ -1,0 +1,38 @@
+<!-- jobposting/post_detail.html -->
+{% extends 'base_generic.html' %}
+
+{% block content %}
+  <style>
+  .inline-form {
+    display: inline-block;
+  }
+  </style>
+  <div class="container mt-4">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <h2 class="mb-3">{{ post.title }}</h2>
+        <p class="mb-2"><strong>Type:</strong> {{ post.job_type }}</p>
+        <p class="mb-2"><strong>Salary:</strong> {{ post.salary }}</p>
+        <p class="mb-2"><strong>City:</strong> {{ post.city }}</p>
+        <p class="mb-2"><strong>State:</strong> {{ post.country }}</p>
+        <p class="mb-2"><strong>Company:</strong> {{ post.company }}</p>
+        <p class="mb-2"><strong>Posted on:</strong> {{ post.created_at }}</p>
+        <p class="mb-4"><strong>Description:</strong></p>
+        <p>{{ post.description }}</p>
+        {% if user_type == 'employer' %}
+          <form class="inline-form" action="{% url 'posts:post_update' post.id %}" method="get">
+            <button type="submit" class="btn btn-primary mr-2">Update</button>
+          </form>
+          <form class="inline-form" action="{% url 'posts:post_delete' post.id %}" method="get">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        {% elif user_type == 'applicant' %}
+          <form class="inline-form" action="{% url 'posts:post_apply' post.id %}" method="get">
+            <button type="submit" class="btn btn-success">Apply</button>
+          </form>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
